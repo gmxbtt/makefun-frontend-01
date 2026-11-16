@@ -21,6 +21,14 @@ const reqinfo = document.getElementById('reqinfo');
 const searchInput = document.getElementById('q');
 window.__shotReady = false;
 
+// Avatars and logos come from third-party hosts and may fail (offline,
+// bad cert, deleted account): hide a broken image instead of showing a
+// broken-image icon. Capture phase: error events do not bubble.
+document.addEventListener('error', (ev) => {
+  const t = ev.target;
+  if (t && t.tagName === 'IMG') t.style.display = 'none';
+}, true);
+
 const ui = { q: '', sort: 'deadline', status: 'open', limit: 24 };
 let boardCache = null; // last board payload, so search/sort re-render without a request
 let tickTimer = null;
